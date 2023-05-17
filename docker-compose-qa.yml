@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis
+    ports:
+      - "6380:6379"
+    restart: always
+
+  postgres-db-doctor:
+    container_name: postgres-db-doctor
+    image: postgres
+    environment:
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_DB: "postgres"
+      TZ: "America/Sao_Paulo"
+    ports:
+      - "5433:5432"
+    networks:
+      - doc-compose-network
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin4PT
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      TZ: "America/Sao_Paulo"
+    ports:
+      - "16544:80"
+    networks:
+      - doc-compose-network
+
+  doctor-service-api:
+    container_name: doctor-service-api
+    image: docker.io/library/doctor-label:0.0.1-SNAPSHOT
+    environment:
+      SPRING_PROFILES_ACTIVE: qa
+      TZ: "America/Sao_Paulo"
+    ports:
+      - "81:8088"
+    depends_on:
+      - postgres-db-doctor
+    networks:
+      - doc-compose-network
+
+networks:
+  doc-compose-network:
+    driver: bridge

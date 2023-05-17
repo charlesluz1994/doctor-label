@@ -1,0 +1,50 @@
+#arquivo de configuracoes local/default
+
+#port config
+server:
+  port: 8088
+
+#profile config
+spring:
+  application:
+    name: "doctor-label"
+  config:
+    profiles:
+      active: "qa"
+  #database config
+  datasource:
+    url: "jdbc:postgresql://postgres-db-doctor:5432/doctor-db?currentSchema=public"
+    username: "admin"
+    password: "admin"
+    driver-class-name: "org.postgresql.Driver"
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  #redid config
+  cache:
+    redis:
+      port: '6379'
+      host: localhost
+      password: ''
+    type: redis
+
+  #flyway config
+  flyway:
+    locations: "db/migration"
+    baseline-on-migrate: true
+
+  #devtools config
+  devtools:
+    restart:
+      enabled: true
+
+#swagger config
+springdoc:
+  swagger-ui:
+    path: "/doctor-label/swagger-ui.html"
+
+  #label-service:
+  #url: http://localhost:8283
