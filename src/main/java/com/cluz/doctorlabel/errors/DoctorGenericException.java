@@ -1,4 +1,4 @@
-package com.cluz.doctor.doctorlabel.errors;
+package com.cluz.doctorlabel.errors;
 
 public class DoctorGenericException extends RuntimeException {
     public DoctorGenericException() {

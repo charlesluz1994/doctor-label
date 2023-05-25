@@ -1,6 +1,6 @@
-package com.cluz.doctor.doctorlabel.repositories;
+package com.cluz.doctorlabel.repositories;
 
-import com.cluz.doctor.doctorlabel.entities.DoctorLabel;
+import com.cluz.doctorlabel.entities.DoctorLabel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,10 +21,11 @@ public interface DoctorLabelRepository extends JpaRepository<DoctorLabel, Long> 
 
     Optional<List<DoctorLabel>> findByLabel(String label);
 
+
     @Modifying
     @Transactional
-    @Query("update DoctorLabel d set d.label = null where d.label = :label")
-    void deleteLabelFromCases(String label);
+    @Query("update DoctorLabel d set d.label = null where d.label = :label and d.caseId = :caseId")
+    void deleteLabelFromCases(Long caseId, String label);
 
     void deleteById(Long id);
 

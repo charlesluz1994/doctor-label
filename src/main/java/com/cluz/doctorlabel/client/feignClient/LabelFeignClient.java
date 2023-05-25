@@ -1,13 +1,15 @@
-package com.cluz.doctor.doctorlabel.client.feignClients;
+package com.cluz.doctorlabel.client.feignClient;
 
-import com.cluz.doctor.doctorlabel.client.response.Label;
+import com.cluz.doctorlabel.client.response.Label;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "label-service", url = "http://localhost:80", path = "/labels")
+// @FeignClient(name = "label-service", url = "http://ec2-18-232-146-72.compute-1.amazonaws.com", path = "/labels")
+@FeignClient(name = "label-service", url = "localhost:8090", path = "/labels")
+
 @Component
 public interface LabelFeignClient {
     @PostMapping()
@@ -16,7 +18,7 @@ public interface LabelFeignClient {
     @GetMapping()
     List<Label> findAll();
 
-    @GetMapping("/code/{code}")
+    @GetMapping("/{code}")
     Label getLabelByCode(@PathVariable String code);
 
     @PutMapping("/{code}")

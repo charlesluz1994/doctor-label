@@ -1,8 +1,8 @@
-package com.cluz.doctor.doctorlabel.controllers;
+package com.cluz.doctorlabel.controllers;
 
-import com.cluz.doctor.doctorlabel.entities.DoctorLabel;
-import com.cluz.doctor.doctorlabel.repositories.DoctorLabelRepository;
-import com.cluz.doctor.doctorlabel.services.DoctorService;
+import com.cluz.doctorlabel.entities.DoctorLabel;
+import com.cluz.doctorlabel.repositories.DoctorLabelRepository;
+import com.cluz.doctorlabel.services.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,9 +53,9 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/label/{label}")
-    public ResponseEntity<Void> deleteLabelFromCases(@PathVariable String label) {
-        doctorLabelRepository.deleteLabelFromCases(label);
+    @DeleteMapping("/label/{caseId}/{label}")
+    public ResponseEntity<Void> deleteLabelFromCases(@PathVariable Long caseId,@PathVariable String label) {
+        doctorLabelRepository.deleteLabelFromCases(caseId, label);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

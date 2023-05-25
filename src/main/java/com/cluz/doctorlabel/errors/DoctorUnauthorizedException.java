@@ -1,4 +1,4 @@
-package com.cluz.doctor.doctorlabel.errors;
+package com.cluz.doctorlabel.errors;
 
 public class DoctorUnauthorizedException extends DoctorGenericException {
     public DoctorUnauthorizedException() {

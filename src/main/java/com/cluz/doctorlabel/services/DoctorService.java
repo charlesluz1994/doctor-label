@@ -1,10 +1,10 @@
-package com.cluz.doctor.doctorlabel.services;
+package com.cluz.doctorlabel.services;
 
-import com.cluz.doctor.doctorlabel.client.feignClients.LabelFeignClient;
-import com.cluz.doctor.doctorlabel.client.response.Label;
-import com.cluz.doctor.doctorlabel.entities.DoctorLabel;
-import com.cluz.doctor.doctorlabel.errors.DoctorResourceNotFoundException;
-import com.cluz.doctor.doctorlabel.repositories.DoctorLabelRepository;
+import com.cluz.doctorlabel.client.feignClient.LabelFeignClient;
+import com.cluz.doctorlabel.client.response.Label;
+import com.cluz.doctorlabel.entities.DoctorLabel;
+import com.cluz.doctorlabel.errors.DoctorResourceNotFoundException;
+import com.cluz.doctorlabel.repositories.DoctorLabelRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,28 +21,26 @@ public class DoctorService {
 
     public DoctorLabel create(DoctorLabel doctorLabel) {
 
-        Label label = labelFeignClient.getLabelByCode(doctorLabel.getLabel());
-        if (label == null) {
-            //Here I can change to create a new label in the future. Instead of throw this exception.
-            throw new DoctorResourceNotFoundException("Label not found with code " + doctorLabel.getLabel());
+        String label = doctorLabel.getLabel();
+        Label receivedLabel = labelFeignClient.getLabelByCode(label);
+        if (receivedLabel.getCode() == null) {
+            throw new DoctorResourceNotFoundException("Label with code " + doctorLabel.getLabel());
         }
-        doctorLabel.setLabel(label.getLabelCode());
+        //doctorLabel.setLabel(label.getLabelCode());
         return doctorLabelRepository.save(doctorLabel);
     }
 
     public DoctorLabel update(Long id, DoctorLabel doctorLabel) {
-        DoctorLabel existingDoctorLabel = doctorLabelRepository.findById(id).get();
-        if (existingDoctorLabel == null) {
-            throw new DoctorResourceNotFoundException("Doctor Label not found with id " + id);
-        }
+        DoctorLabel existingDoctorLabel = doctorLabelRepository.findById(id).orElseThrow(() -> new DoctorResourceNotFoundException("Doctor Label not found with id " + id));
+
         Label label = labelFeignClient.getLabelByCode(doctorLabel.getLabel());
-        if (label == null) {
-            throw new DoctorResourceNotFoundException("Doctor Label not found with Label " + doctorLabel.getLabel());
+        if (label.getCode() == null) {
+            throw new DoctorResourceNotFoundException("Label not found " + doctorLabel.getLabel());
         }
         existingDoctorLabel.setCaseId(doctorLabel.getCaseId());
         existingDoctorLabel.setCaseDescription(doctorLabel.getCaseDescription());
         existingDoctorLabel.setDoctorId(doctorLabel.getDoctorId());
-        existingDoctorLabel.setLabel(label.getLabelCode());
+        existingDoctorLabel.setLabel(label.getCode());
         existingDoctorLabel.setTimeToLabel(LocalDateTime.now());
         return doctorLabelRepository.save(existingDoctorLabel);
     }

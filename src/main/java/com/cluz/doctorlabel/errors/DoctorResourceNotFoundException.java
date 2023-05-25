@@ -1,4 +1,4 @@
-package com.cluz.doctor.doctorlabel.errors;
+package com.cluz.doctorlabel.errors;
 
 import java.util.UUID;
 

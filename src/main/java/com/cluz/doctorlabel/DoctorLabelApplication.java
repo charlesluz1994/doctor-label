@@ -1,4 +1,4 @@
-package com.cluz.doctor.doctorlabel;
+package com.cluz.doctorlabel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
